@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: zuul
+  rabbitmq:
+    host: 176.114.11.150
+    port: 5672
+    username: admin
+    password: admin
+  sleuth:
+    sampler:
+      probability: 1
+    
+server:
+  port: 3001
+  
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka1:2001/eureka, http://eureka2:2002/eureka
+
+zuul:
+  routes:
+    item-service: /item-service/**
+    user-service: /user-service/**
+    order-service: /order-service/**
+    
+  retryable: true
+    
+ribbon:
+  ConnectTimeout: 20000
+  ReadTimeout: 20000
+  MaxAutoRetriesNextServer: 1
+  MaxAutoRetries: 1
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+            
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
